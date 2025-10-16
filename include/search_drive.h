@@ -23,11 +23,13 @@ public:
     void set_root_dir(std::string root);
     std::string get_root_dir();
 
+    void set_files_to_search(std::vector<std::string> snames);
+
 private:
     CFG cfg;
     std::vector<std::string> snames;
     std::string root_dir;
-    std::map<std::string, std::string> result;
+    std::map<std::string, std::string> respond;
 
 };
 

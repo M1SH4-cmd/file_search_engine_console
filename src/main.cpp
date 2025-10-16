@@ -54,7 +54,7 @@ void search_exec(SearchDrive &drive) {
 
         std::cout << "< Файл добавлен в поиск >: " << input << "\n";
     }
-
+    drive.
     std::map<std::string, std::string> res = drive.search(files_to_search);
 
     for(auto found_file : res) {

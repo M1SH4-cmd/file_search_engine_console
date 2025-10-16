@@ -17,7 +17,7 @@ SearchDrive::SearchDrive(std::string root) {
 
 std::map<std::string, std::string> SearchDrive::search(std::vector<std::string> snames) {
 
-    return result;
+    return respond;
 }
 
 
@@ -27,4 +27,8 @@ void SearchDrive::set_root_dir(std::string root) {
 
 std::string SearchDrive::get_root_dir() {
     return root_dir;
+}
+
+void SearchDrive::set_files_to_search(std::vector<std::string> snames) {
+    this->snames = snames;
 }
