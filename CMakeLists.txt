@@ -17,8 +17,6 @@ set(SOURCES
         include/json_parser.h
         src/json_parser.cpp)
 
-
-
 add_executable(file_search_drive_console_v
         ${HEADERS}
         ${SOURCES})
