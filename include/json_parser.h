@@ -16,6 +16,7 @@ struct CFG {
     std::map<std::string, std::string> respond;
     std::string version;
     std::string app_name;
+    std::string dir_to_search;
 };
 
 class JsonParser {
