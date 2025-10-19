@@ -36,6 +36,7 @@ void search_exec(SearchDrive &drive) {
         return;
     } else {
         files_to_search.push_back(input1);
+        std::cout << "< File added to search >: " << input1 << "\n";
     }
 
     while (true) {
@@ -52,9 +53,9 @@ void search_exec(SearchDrive &drive) {
 
         files_to_search.push_back(input);
 
-        std::cout << "< Файл добавлен в поиск >: " << input << "\n";
+        std::cout << "< File added to search >: " << input << "\n";
     }
-    drive.
+    //drive.
     std::map<std::string, std::string> res = drive.search(files_to_search);
 
     for(auto found_file : res) {
@@ -80,10 +81,10 @@ int main(int argc, char** argv) {
 
     if (argc > 1) {
         SearchDrive drive(argv[1]);
-        //search_exec(drive);
+        search_exec(drive);
     } else {
         SearchDrive drive;
-        //search_exec(drive);
+        search_exec(drive);
     }
 
         return 0;

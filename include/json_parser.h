@@ -1,5 +1,8 @@
 #ifndef FILE_SEARCH_DRIVE_CONSOLE_V_JSON_PARSER_H
 #define FILE_SEARCH_DRIVE_CONSOLE_V_JSON_PARSER_H
+
+#pragma once
+
 #include <nlohmann/json.hpp>
 #include <mutex>
 #include <fstream>
@@ -22,7 +25,6 @@ struct CFG {
 class JsonParser {
 public:
     static JsonParser &instance();
-    //bool parse_arrays();
     CFG &json_cfg();
     bool load_data(CFG& cfg);
     void upload_data (CFG& cfg);
@@ -34,6 +36,5 @@ private:
     JsonParser(const JsonParser& parser) = delete;
     JsonParser& operator=(const JsonParser&) = delete;
 };
-
 
 #endif //FILE_SEARCH_DRIVE_CONSOLE_V_JSON_PARSER_H

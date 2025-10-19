@@ -1,28 +1,31 @@
 #ifndef FILE_SEARCH_DRIVE_CONSOLE_V_SEARCH_DRIVE_CPP
 #define FILE_SEARCH_DRIVE_CONSOLE_V_SEARCH_DRIVE_H
 
+#pragma once
+
 #include "json_parser.h"
 #include <nlohmann\json.hpp>
 #include <map>
 #include <vector>
-#include <thread>
 #include <ctime>
+#include <filesystem>
+#include <thread>
+#include <future>
+#include <atomic>
+#include <mutex>
+#include <string>
 
 using json = nlohmann::json;
 class SearchDrive {
 
 public:
-
     SearchDrive ();
-    SearchDrive (std::string root);
+    explicit SearchDrive (std::string root);
 
     std::map<std::string, std::string> search(std::vector<std::string> snames);
-
     bool update_data(CFG &cfg);
-
     void set_root_dir(std::string root);
     std::string get_root_dir();
-
     void set_files_to_search(std::vector<std::string> snames);
 
 private:
@@ -30,7 +33,6 @@ private:
     std::vector<std::string> snames;
     std::string root_dir;
     std::map<std::string, std::string> respond;
-
 };
 
 #endif //FILE_SEARCH_DRIVE_CONSOLE_V_SEARCH_DRIVE_CPP
