@@ -28,11 +28,7 @@ void search_exec(SearchDrive &drive) {
     std::string input;
 
     std::cout << "Selected directory: " << drive.get_root_dir() << std::endl;
-    std::cout << "Options:" << std::endl;
-    std::cout << "  - Enter file names to search" << std::endl;
-    std::cout << "  - Type 'DIR' to change source directory" << std::endl;
-    std::cout << "  - Type 'DONE' to start search" << std::endl;
-    std::cout << "  - Type 'EXIT' to quit" << std::endl << std::endl;
+    std::cout << "Enter file names to search (one per line). Type 'DONE' to start search:" << std::endl;
 
     while (true) {
         std::cout << "> ";
@@ -40,30 +36,18 @@ void search_exec(SearchDrive &drive) {
 
         if (input == "DONE") {
             if (files_to_search.empty()) {
-                std::cout << "No files specified for search. Please enter at least one file name." << std::endl;
+                std::cout << "No files specified. Please enter file names." << std::endl;
                 continue;
             }
             break;
         }
-        else if (input == "DIR") {
-            std::cout << "Enter new directory path: ";
-            std::getline(std::cin, input);
-            drive.set_root_dir(input);
-            std::cout << "Directory changed to: " << drive.get_root_dir() << std::endl;
-        }
-        else if (input == "EXIT") {
-            std::cout << "Goodbye!" << std::endl;
-            exit(0);
-        }
         else if (!input.empty()) {
             files_to_search.push_back(input);
-            std::cout << "Added to search: '" << input << "'" << std::endl;
-            std::cout << "Total files to search: " << files_to_search.size() << std::endl;
+            std::cout << "Added: '" << input << "'" << std::endl;
         }
     }
 
-    std::cout << std::endl << "Starting search for " << files_to_search.size() << " files..." << std::endl;
-    std::cout << "This may take a while..." << std::endl << std::endl;
+    std::cout << std::endl << "Starting search..." << std::endl;
 
     auto start_time = std::chrono::steady_clock::now();
 
@@ -73,8 +57,8 @@ void search_exec(SearchDrive &drive) {
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
 
     std::cout << std::endl << "=== SEARCH RESULTS ===" << std::endl;
-    std::cout << "Search completed in " << duration.count() << " ms" << std::endl;
-    std::cout << "Found " << res.size() << " files:" << std::endl << std::endl;
+    std::cout << "Time: " << duration.count() << " ms" << std::endl;
+    std::cout << "Found: " << res.size() << " files" << std::endl << std::endl;
 
     if (res.empty()) {
         std::cout << "No files found." << std::endl;
@@ -89,14 +73,6 @@ void search_exec(SearchDrive &drive) {
 }
 
 int main(int argc, char** argv) {
-    // Проверка конфигурационного файла
-    std::ifstream cfg("config.json");
-    if (!cfg.is_open()) {
-        std::cerr << "Warning: config.json not found. Using default settings." << std::endl;
-    } else {
-        cfg.close();
-    }
-
     // Очистка экрана
 #ifdef _WIN32
     system("cls");
@@ -111,21 +87,25 @@ int main(int argc, char** argv) {
 
         if (argc > 1) {
             drive.set_root_dir(argv[1]);
-            std::cout << "Using command line directory: " << drive.get_root_dir() << std::endl;
+            std::cout << "Using directory: " << drive.get_root_dir() << std::endl;
         }
 
-        while (true) {
-            search_exec(drive);
+        // Тестовый поиск для отладки
+        std::cout << "=== TEST MODE ===" << std::endl;
+        std::vector<std::string> test_files = {"notepad.exe", "cmd.exe", "explorer.exe"};
+        std::cout << "Testing search for common Windows files..." << std::endl;
 
-            std::cout << std::endl << "Start new search? (y/n): ";
-            std::string choice;
-            std::getline(std::cin, choice);
+        auto result = drive.search(test_files);
+        std::cout << "Test found: " << result.size() << " files" << std::endl;
 
-            if (choice != "y" && choice != "Y") {
-                std::cout << "Thank you for using File Search Drive!" << std::endl;
-                break;
-            }
+        for (const auto& file : result) {
+            std::cout << "FOUND: " << file.first << " -> " << file.second << std::endl;
         }
+
+        std::cout << "=== END TEST ===" << std::endl << std::endl;
+
+        // Основной поиск
+        search_exec(drive);
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
